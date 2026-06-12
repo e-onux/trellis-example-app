@@ -1,0 +1,24 @@
+name: checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Tests
+        run: node --test tests/
+
+      - name: Trellis audit
+        run: |
+          git clone --depth 1 https://github.com/e-onux/trellis /tmp/trellis
+          cd /tmp/trellis && npm install
+          node /tmp/trellis/packages/cli/bin/trellis.js audit --root $GITHUB_WORKSPACE
