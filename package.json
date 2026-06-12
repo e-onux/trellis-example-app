@@ -1,0 +1,15 @@
+{
+  "name": "shipping-quotes",
+  "version": "1.0.0",
+  "description": "A small shipping-quotes HTTP service governed by the Trellis standard. Worked example for e-onux/trellis.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test tests/"
+  },
+  "license": "Apache-2.0"
+}
