@@ -1,0 +1,70 @@
+id: health-report
+title: Health report
+owner: platform
+version: 1.0.0
+status: active
+
+intent:
+  description: >
+    Report whether the service is ready to handle traffic, based on the server
+    lifecycle state.
+
+responsibility:
+  does:
+    - report service readiness as a health response
+  does_not:
+    - check downstream dependencies (there are none)
+    - restart or repair the service
+
+inputs:
+  state:
+    type: object
+    required: true
+    description: "Server lifecycle state { ready: boolean }. src/server.js sets ready to true after listen."
+
+outputs:
+  ok:
+    type: boolean
+    description: true when the service is ready; otherwise a NOT_READY error (HTTP 503).
+
+examples:
+  - name: Service is ready
+    input: { state: { ready: true } }
+    expected:
+      ok: true
+  - name: Service is not ready yet
+    input: { state: { ready: false } }
+    expected_error: { code: NOT_READY }
+
+invariants:
+  - ok is true exactly when the HTTP status is 200
+
+dependencies:
+  internal: []
+  external: []
+
+budgets:
+  max_files: 3
+  max_lines_of_code: 300
+  max_direct_dependencies: 2
+  max_public_operations: 2
+  max_cyclomatic_complexity: 10
+  max_change_reasons: 1
+
+# Budgets measure these real source files (repo-relative).
+implementation:
+  - src/health.js
+
+verification:
+  unit: required
+  contract: required
+  regression: required
+
+review:
+  interval: 6 months
+  triggers:
+    - readiness-model-changed
+    - first-downstream-dependency-added
+
+decisions: []
+evidence: []

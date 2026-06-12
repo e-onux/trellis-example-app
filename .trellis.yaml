@@ -1,0 +1,34 @@
+# Trellis project configuration.
+version: "0.1"
+standard: "0.1"
+
+# Project profile: backend | frontend | data-pipeline | llm-app
+profile: backend
+
+# Adoption preset: light | standard | strict
+preset: standard
+
+# Agent adapter files to keep in sync (AGENTS.md is always canonical)
+agents:
+  - claude
+  - copilot
+
+# Optional pillars
+modules:
+  capability_budgets: true
+  evidence_graph: true
+  decision_lifecycle: true
+  extensions: true
+  tech_radar: true
+  test_cockpit: false
+
+# Where governed artifacts live (relative to repo root). Defaults match the standard layout.
+paths:
+  governance: governance
+  product: product
+  tech: tech
+  sources: sources
+  extensions: extensions
+  capabilities: capabilities
+  quality: quality
+  lifecycle: lifecycle

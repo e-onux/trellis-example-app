@@ -1,0 +1,88 @@
+id: resolve-destination-zone
+title: Resolve destination zone
+owner: shipping
+version: 1.0.0
+status: active
+
+intent:
+  description: >
+    Resolve a destination country code to a shipping zone with its surcharge and extra
+    delivery days, and list the supported zones for GET /zones.
+
+responsibility:
+  does:
+    - map a destination country code to a zone (domestic or international)
+    - report the zone surcharge and extra delivery days
+    - list all supported zones
+  does_not:
+    - calculate the final shipping price
+    - validate package weight or delivery method
+
+inputs:
+  destination:
+    type: country-code
+    required: true
+    description: ISO 3166-1 alpha-2 country code, uppercase.
+
+outputs:
+  zone:
+    type: enum
+    values:
+      - domestic
+      - international
+  surcharge:
+    type: money
+    description: "{ currency, value } added on top of the method price"
+  extra_days:
+    type: integer
+
+examples:
+  - name: Domestic destination
+    input: { destination: DE }
+    expected:
+      zone: domestic
+      surcharge: { currency: EUR, value: 0 }
+      extra_days: 0
+  - name: International destination
+    input: { destination: NL }
+    expected:
+      zone: international
+      surcharge: { currency: EUR, value: 5 }
+      extra_days: 2
+  - name: Malformed destination
+    input: { destination: Germany }
+    expected_error: { code: INVALID_DESTINATION }
+
+invariants:
+  - surcharge.value >= 0
+  - extra_days >= 0
+
+dependencies:
+  internal: []
+  external: []
+
+budgets:
+  max_files: 3
+  max_lines_of_code: 300
+  max_direct_dependencies: 2
+  max_public_operations: 2
+  max_cyclomatic_complexity: 10
+  max_change_reasons: 1
+
+# Budgets measure these real source files (repo-relative).
+implementation:
+  - src/zones.js
+
+verification:
+  unit: required
+  contract: required
+  regression: required
+
+review:
+  interval: 6 months
+  triggers:
+    - new-zone-added
+    - surcharge-model-changed
+
+decisions: []
+evidence: []

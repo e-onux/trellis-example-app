@@ -1,0 +1,102 @@
+id: calculate-shipping-quote
+title: Calculate shipping quote
+owner: shipping
+version: 1.0.0
+status: active
+
+intent:
+  description: >
+    Calculate the shipping price and estimated delivery duration from a destination,
+    package weight and delivery method.
+
+responsibility:
+  does:
+    - calculate the shipping price for a destination, weight and delivery method
+    - estimate the delivery duration in days
+  does_not:
+    - resolve destination zones (delegated to resolve-destination-zone)
+    - create orders or shipping labels
+    - process payments
+
+inputs:
+  destination:
+    type: country-code
+    required: true
+    description: ISO 3166-1 alpha-2 country code, uppercase.
+  weight_kg:
+    type: number
+    required: true
+    minimum: 0.01
+    maximum: 30
+  method:
+    type: enum
+    required: true
+    values:
+      - standard
+      - express
+
+outputs:
+  amount:
+    type: money
+    description: "{ currency, value }"
+  estimated_days:
+    type: integer
+
+examples:
+  - name: Domestic standard delivery
+    input: { destination: DE, weight_kg: 2, method: standard }
+    expected:
+      amount: { currency: EUR, value: 4.99 }
+      estimated_days: 3
+  - name: Domestic express delivery
+    input: { destination: DE, weight_kg: 2, method: express }
+    expected:
+      amount: { currency: EUR, value: 11.99 }
+      estimated_days: 1
+  - name: International standard delivery
+    input: { destination: NL, weight_kg: 2, method: standard }
+    expected:
+      amount: { currency: EUR, value: 9.99 }
+      estimated_days: 5
+  - name: Invalid package weight
+    input: { destination: DE, weight_kg: -1, method: standard }
+    expected_error: { code: INVALID_WEIGHT }
+  - name: Unknown delivery method
+    input: { destination: DE, weight_kg: 2, method: drone }
+    expected_error: { code: INVALID_METHOD }
+
+invariants:
+  - amount.value >= 0
+  - estimated_days >= 1
+
+dependencies:
+  internal:
+    - resolve-destination-zone
+  external: []
+
+budgets:
+  max_files: 3
+  max_lines_of_code: 300
+  max_direct_dependencies: 2
+  max_public_operations: 2
+  max_cyclomatic_complexity: 10
+  max_change_reasons: 1
+
+# Budgets measure these real source files (repo-relative).
+implementation:
+  - src/quote.js
+
+verification:
+  unit: required
+  contract: required
+  regression: required
+
+review:
+  interval: 6 months
+  triggers:
+    - pricing-model-changed
+    - new-delivery-method-added
+    - budget-exceeded
+
+decisions: [ADR-0001]
+evidence: []

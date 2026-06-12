@@ -1,0 +1,19 @@
+# Capability map - the machine-readable index of capabilities.
+# `trellis audit` cross-checks this against the capabilities/ folders.
+version: "0.1"
+capabilities:
+  - id: calculate-shipping-quote
+    status: active
+    owner: shipping
+    path: capabilities/calculate-shipping-quote
+    depends_on: [resolve-destination-zone]
+  - id: resolve-destination-zone
+    status: active
+    owner: shipping
+    path: capabilities/resolve-destination-zone
+    depends_on: []
+  - id: health-report
+    status: active
+    owner: platform
+    path: capabilities/health-report
+    depends_on: []
