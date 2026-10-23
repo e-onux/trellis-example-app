@@ -1,6 +1,9 @@
 # Trellis project configuration.
-version: "0.1"
-standard: "0.1"
+version: "0.2"
+standard: "0.2"
+
+# All governed artifacts live under this directory; paths below are relative to it.
+root: trellis
 
 # Project profile: backend | frontend | data-pipeline | llm-app
 profile: backend
@@ -22,7 +25,7 @@ modules:
   tech_radar: true
   test_cockpit: false
 
-# Where governed artifacts live (relative to repo root). Defaults match the standard layout.
+# Where governed artifacts live (relative to `root`). Defaults match the standard layout.
 paths:
   governance: governance
   product: product

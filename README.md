@@ -9,10 +9,10 @@ Trellis standard: https://github.com/e-onux/trellis | https://trellis.sidre.site
 
 ## What to look at
 
-- `capabilities/<id>/contract.yaml` - one contract per capability ([calculate-shipping-quote](capabilities/calculate-shipping-quote/contract.yaml), [resolve-destination-zone](capabilities/resolve-destination-zone/contract.yaml), [health-report](capabilities/health-report/contract.yaml)), each with inputs, outputs, normal and error examples, invariants and budgets.
+- `trellis/capabilities/<id>/contract.yaml` - one contract per capability ([calculate-shipping-quote](trellis/capabilities/calculate-shipping-quote/contract.yaml), [resolve-destination-zone](trellis/capabilities/resolve-destination-zone/contract.yaml), [health-report](trellis/capabilities/health-report/contract.yaml)), each with inputs, outputs, normal and error examples, invariants and budgets.
 - The `implementation:` key in each contract - budgets measure the real files under `src/`, not a placeholder. `trellis validate` counts files and lines of code against the limits.
-- [tech/decisions/ADR-0001](tech/decisions/ADR-0001-zero-dependency-http-service.md) - why this service has zero npm dependencies, recorded with assumptions and review triggers instead of tribal knowledge.
-- [quality/quality-gates.yaml](quality/quality-gates.yaml) - the gates `trellis audit` evaluates; enforced gates fail CI.
+- [trellis/tech/decisions/ADR-0001](trellis/tech/decisions/ADR-0001-zero-dependency-http-service.md) - why this service has zero npm dependencies, recorded with assumptions and review triggers instead of tribal knowledge.
+- [trellis/quality/quality-gates.yaml](trellis/quality/quality-gates.yaml) - the gates `trellis audit` evaluates; enforced gates fail CI.
 - [AGENTS.md](AGENTS.md) - canonical agent rules. `CLAUDE.md` and `.github/copilot-instructions.md` are thin pointers to it (single source of truth).
 - [tests/contract.test.js](tests/contract.test.js) - contract tests that mirror the examples in the contracts, run with plain `node --test`.
 
